@@ -1,0 +1,85 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Currency &amp; Unit Converter</title>
+        <meta name="description" content="Convert between major currencies and metric/imperial units using this fast and simple tool.">
+        <meta name="keywords" content="currency converter,unit converter,GBP to USD,metric to imperial,conversion tool">
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+            h1 { color: #333333; }
+            form { margin-top: 1rem; }
+            label { display: block; margin: 0.5rem 0 0.2rem; font-weight: bold; }
+            input, select { width: 100%; padding: 0.5rem; margin-bottom: 1rem; box-sizing: border-box; }
+            button { padding: 0.5rem 1rem; background-color: #0066cc; color: white; border: none; cursor: pointer; }
+            button:hover { background-color: #004d99; }
+            .result { margin-top: 1rem; background: #f5f5f5; padding: 1rem; border: 1px solid #dddddd; }
+            footer { margin-top: 2rem; font-size: 0.9rem; color: #666666; }
+        </style>
+    </head>
+    <body>
+    
+        <h1>Currency &amp; Unit Converter</h1>
+        <p>Convert money or units quickly. Exchange rates are approximate and may not reflect current market rates. Always check live rates before making a financial decision.</p>
+        <form id="conv-form" onsubmit="event.preventDefault(); convertValues();">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" value="1" step="0.01" required>
+            <label for="fromUnit">From</label>
+            <select id="fromUnit">
+                <option value="GBP">GBP</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="m">Metres</option>
+                <option value="ft">Feet</option>
+            </select>
+            <label for="toUnit">To</label>
+            <select id="toUnit">
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="ft">Feet</option>
+                <option value="m">Metres</option>
+            </select>
+            <button type="submit">Convert</button>
+        </form>
+        <div id="convResult" class="result" style="display:none;"></div>
+        <h2>Understanding conversion rates</h2>
+        <p>Currency exchange rates fluctuate constantly due to market forces. This tool uses fixed rates for demonstration:</p>
+        <ul>
+            <li>1 GBP ≈ 1.3 USD</li>
+            <li>1 GBP ≈ 1.15 EUR</li>
+        </ul>
+        <p>Unit conversions follow fixed physical relationships (e.g. 1 metre = 3.28084 feet). Always verify values for precision‑sensitive applications.</p>
+    <script>
+
+        function convertValues() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const from = document.getElementById('fromUnit').value;
+            const to = document.getElementById('toUnit').value;
+            const rates = { 'GBP': 1.0, 'USD': 1.3, 'EUR': 1.15 };
+            let result = 0;
+            if ((from === 'm' && to === 'ft') || (from === 'ft' && to === 'm')) {
+                // Unit conversion
+                if (from === 'm' && to === 'ft') result = amount * 3.28084;
+                else result = amount / 3.28084;
+            } else if (rates[from] && rates[to]) {
+                result = amount / rates[from] * rates[to];
+            } else {
+                document.getElementById('convResult').style.display = 'block';
+                document.getElementById('convResult').innerHTML = 'Unsupported conversion';
+                return;
+            }
+            const resultDiv = document.getElementById('convResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<strong>Converted:</strong> ${result.toFixed(4)} ${to}`;
+        }
+    
+</script>
+        <footer>
+            <p>Disclaimer: This tool is for informational purposes only. Please verify any calculations with official sources before making financial or health decisions.</p>
+        </footer>
+    </body>
+    </html>
+    
